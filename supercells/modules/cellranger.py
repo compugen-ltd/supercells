@@ -21,5 +21,16 @@ class CellRanger:
         else:
             print("No valid studies found")
 
-    def parse_studies(_self):
-        print("Parsing studies")  # TODO: implement the function
+    def parse_studies(self):
+        print("Parsing studies")
+        lst = []
+        names = []
+        for f in self.STUDIES:
+            lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
+            names.append(f.split("/")[-3])
+        print(names)
+        df = pd.concat(lst)
+        df["name"] = names
+        df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
+        df.to_csv("qc_data.csv")
+        # TODO: make this fucntion nicer, define where to save the file
