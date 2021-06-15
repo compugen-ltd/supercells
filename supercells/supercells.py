@@ -19,13 +19,21 @@ def get_argument_parser():
         required=True,
         help=("Enter the location of the input files"),
     )
+    parser.add_argument(
+        "--output",
+        "-o",
+        metavar="DIRECTORY",
+        required=False,
+        default="./",
+        help=("Specify the location of the output files, defualt is current wd"),
+    )
     return parser
 
 
 def main():
     p = get_argument_parser()
     args = p.parse_args()
-    CellRanger(args.input)
+    CellRanger(args)
     success = True
     sys.exit(0 if success else 1)
 

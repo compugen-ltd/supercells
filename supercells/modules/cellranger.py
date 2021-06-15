@@ -7,10 +7,10 @@ import glob as glob
 
 
 class CellRanger:
-    def __init__(self, folder_path):
+    def __init__(self, args):
         # initialize the object
-        self.PATH = folder_path
-
+        self.PATH = args.input
+        self.OUTPATH = args.output
         # parse the input folder
         print("Parsing folder: " + self.PATH)
         self.STUDIES = glob.glob(self.PATH + "*/outs/")
@@ -32,5 +32,5 @@ class CellRanger:
         df = pd.concat(lst)
         df["name"] = names
         df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
-        df.to_csv("qc_data.csv")
-        # TODO: make this fucntion nicer, define where to save the file
+        df.to_csv(self.OUTPATH + "qc_data.csv")
+        # TODO: make this fucntion nicer, define where to save the file and in what format
