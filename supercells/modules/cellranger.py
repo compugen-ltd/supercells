@@ -4,6 +4,10 @@ supercells - module to parse cellranger output data
 """
 import pandas as pd
 import glob as glob
+import os
+from version import __version__
+from datetime import datetime
+import json
 
 
 class CellRanger:
@@ -32,5 +36,18 @@ class CellRanger:
         df = pd.concat(lst)
         df["name"] = names
         df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
-        df.to_csv(self.OUTPATH + "qc_data.csv")
-        # TODO: make this fucntion nicer, define where to save the file and in what format
+        out_dir = self.OUTPATH + "supercells_data/"
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        df.to_csv(out_dir + "supercells_data.csv")
+        df.to_html(self.OUTPATH + "supercells_report.html")
+        # save log
+        log_dict = {
+            "version": "supercells " + str(__version__),
+            "input": self.PATH,
+            "output": self.OUTPATH,
+            "module": "cellranger",
+            "datetime": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        }
+        with open(out_dir + "log.json", "w") as json_file:
+            json.dump(log_dict, json_file)
