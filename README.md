@@ -4,7 +4,7 @@
 
 Sueprcells is a tool which generates a single report for multiple 10x cellranger samples - thus saving time and allowing comparative QC analysis.
 
-It is written in Python (tested with v3.6-3.8).
+It is written in Python (tested with v3.7-3.8).
 
 ## Installation
 
