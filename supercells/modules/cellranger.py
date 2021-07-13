@@ -5,7 +5,6 @@ supercells - module to parse cellranger output data
 import pandas as pd
 import glob as glob
 import os
-from version import __version__
 from datetime import datetime
 import json
 
@@ -43,7 +42,6 @@ class CellRanger:
         df.to_html(self.OUTPATH + "supercells_report.html")
         # save log
         log_dict = {
-            "version": "supercells " + str(__version__),
             "input": self.PATH,
             "output": self.OUTPATH,
             "module": "cellranger",

@@ -2,10 +2,10 @@
 """
 supercells - only the finest of cells
 """
-from version import __version__
+from .version import __version__
 import sys
 import argparse
-from modules.cellranger import CellRanger
+from .modules.cellranger import CellRanger
 
 
 def get_argument_parser():
