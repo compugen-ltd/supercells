@@ -20,7 +20,7 @@ Clone or download the repository and navigate to the package directory, then inv
 
 `pip install . `
 
-PyPI coming soon.. 
+(PyPI coming soon..)
 
 
 ## 💻  Usage
@@ -29,7 +29,7 @@ Once supercells is installed it is run by invoking:
 
 `supercells -i <experiment folder>`
 
-Unless specified otherwise it will generate `supercells_report.html` within the input folder as well as `supercells_report` folder containing the raw CSV files
+Unless specified otherwise it will generate `supercells_report.html` within the input folder as well as `supercells_report` folder containing the raw CSV files. To specify an output directory use the ` -o <output folder>` flag
 
 ## Further development
 Suggestions for additional features and code contributions are welcomed
