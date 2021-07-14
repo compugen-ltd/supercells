@@ -10,6 +10,8 @@ import json
 
 
 class CellRanger:
+    """CellRanger class"""
+
     def __init__(self, args):
         # initialize the object
         self.PATH = args.input
@@ -25,6 +27,7 @@ class CellRanger:
             print("No valid studies found")
 
     def parse_studies(self):
+        """Parse located studies"""
         print("Parsing studies")
         lst = []
         names = []

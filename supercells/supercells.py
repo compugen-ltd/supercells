@@ -31,6 +31,7 @@ def get_argument_parser():
 
 
 def main():
+    """main function that runs supercells"""
     p = get_argument_parser()
     args = p.parse_args()
     CellRanger(args)
