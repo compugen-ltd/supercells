@@ -6,7 +6,7 @@
 
 Supercells is a tool which generates a single report for multiple 10x cellranger samples - thus saving time and allowing comparative QC analysis.
 
-It in written in Python (tested with v3.7-3.8).
+It is written in Python (tested with v3.7-3.9).
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
 [![Compugen on Twitter](https://img.shields.io/twitter/follow/CompugenLtd.svg?style=social&label=Follow)](https://twitter.com/CompugenLtd
