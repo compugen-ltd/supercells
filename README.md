@@ -9,9 +9,9 @@ Supercells is a tool which generates a single report for multiple 10x cellranger
 It is written in Python (tested with v3.7-3.9).
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
+[![PyPI Version](https://img.shields.io/pypi/v/supercells.svg?style=flat-square)](https://pypi.python.org/pypi/supercells/)
 [![Compugen on Twitter](https://img.shields.io/twitter/follow/CompugenLtd.svg?style=social&label=Follow)](https://twitter.com/CompugenLtd
 )
-[![PyPI Version](https://img.shields.io/pypi/v/supercells.svg?style=flat-square)](https://pypi.python.org/pypi/supercells/)
 <br /> 
 
 
