@@ -20,7 +20,8 @@ Clone or download the repository and navigate to the package directory, then inv
 
 `pip install . `
 
-(PyPI coming soon..)
+Using PyPI:
+`pip install supercells`
 
 
 ## 💻  Usage
