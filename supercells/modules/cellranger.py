@@ -32,8 +32,11 @@ class CellRanger:
         lst = []
         names = []
         for f in self.STUDIES:
-            lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
-            names.append(f.split("/")[-3])
+            try:
+                lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
+                names.append(f.split("/")[-3])
+            except:
+                print(f'Failed to find summary for {f}')
         print(names)
         df = pd.concat(lst)
         df["name"] = names
