@@ -16,6 +16,7 @@ class CellRanger:
         # initialize the object
         self.PATH = args.input
         self.OUTPATH = args.output
+        self.OUTDIR = self.OUTPATH + "supercells_data/"
         # parse the input folder
         print("Parsing folder: " + self.PATH)
         self.STUDIES = glob.glob(self.PATH + "*/outs/")
@@ -25,6 +26,25 @@ class CellRanger:
             self.parse_studies()
         else:
             print("No valid studies found")
+
+    def export_to_excel(self, df):
+        """export data to XLSX and whilight issues"""
+        print("Exporting to Excel")
+
+        idx = pd.IndexSlice
+        slice_ = idx["Median Genes per Cell", :]
+
+        def style_low(v, props=""):
+            return props if v < 1500 else None
+        def style_pass(v, props=""):
+            return props if v > 1500 else None
+
+        df = df.style.applymap(
+            style_low, props="color:red;background-color:pink;", subset=slice_
+        )\
+        .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
+        )
+        df.to_excel(self.OUTDIR + "supercells_data.xlsx", sheet_name="Super")
 
     def parse_studies(self):
         """Parse located studies"""
@@ -36,16 +56,20 @@ class CellRanger:
                 lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
                 names.append(f.split("/")[-3])
             except:
-                print(f'Failed to find summary for {f}')
+                print(f"Failed to find summary for {f}")
         print(names)
         df = pd.concat(lst)
         df["name"] = names
         df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
-        out_dir = self.OUTPATH + "supercells_data/"
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-        df.to_csv(out_dir + "supercells_data.csv")
+        
+        if not os.path.exists(self.OUTDIR):
+            os.makedirs(self.OUTDIR)
+        df.to_csv(self.OUTDIR + "supercells_data.csv")
         df.to_html(self.OUTPATH + "supercells_report.html")
+        try:
+            self.export_to_excel(df)
+        except:
+                print(f"Failed to generate XLSX")
         # save log
         log_dict = {
             "input": self.PATH,
@@ -53,5 +77,6 @@ class CellRanger:
             "module": "cellranger",
             "datetime": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         }
-        with open(out_dir + "log.json", "w") as json_file:
+        with open(self.OUTDIR + "log.json", "w") as json_file:
             json.dump(log_dict, json_file)
+        print("Done.\nOutput in "+str(self.OUTPATH))

@@ -34,7 +34,7 @@ Once supercells is installed it is run by invoking:
 
 `supercells -i <experiment folder>`
 
-Unless specified otherwise it will generate `supercells_report.html` within the input folder as well as `supercells_report` folder containing the raw CSV files. To specify an output directory use the ` -o <output folder>` flag
+Unless specified otherwise it will generate `supercells_report.html` within the input folder as well as `supercells_report` folder containing summarizing xlsx file and CSV with the raw data. To specify an output directory use the ` -o <output folder>` flag
 
 ## Further development
 Suggestions for additional features and code contributions are welcomed
