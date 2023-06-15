@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 supercells - module to parse cellranger output data
 """
@@ -7,10 +6,13 @@ import glob as glob
 import os
 from datetime import datetime
 import json
+from IPython.display import HTML
+import webbrowser
 
 
 class CellRanger:
     """CellRanger class"""
+    
 
     def __init__(self, args):
         # initialize the object
@@ -45,6 +47,29 @@ class CellRanger:
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
         )
         df.to_excel(self.OUTDIR + "supercells_data.xlsx", sheet_name="Super")
+        
+    def export_to_html(df):
+        """export data to HTML"""
+        print("Exporting to HTML")
+        
+        idx = pd.IndexSlice
+        slice_ = idx["Median Genes per Cell"]
+        
+        def style_low(v, props=""):
+            return props if v < 1500 else None
+        def style_pass(v, props=""):
+            return props if v > 1500 else None
+
+        style = df.style.applymap(
+            style_low, props="color:red;background-color:pink;", subset=slice_
+        )\
+        .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
+        )
+        df_html = style.render()
+        text_file = open("df.html", "w")
+        text_file.write(df_html)
+        text_file.close()
+        webbrowser.open_new_tab('df.html')
 
     def parse_studies(self):
         """Parse located studies"""
@@ -65,11 +90,16 @@ class CellRanger:
         if not os.path.exists(self.OUTDIR):
             os.makedirs(self.OUTDIR)
         df.to_csv(self.OUTDIR + "supercells_data.csv")
+        df.to_json(self.OUTDIR + "supercells_json_report.json")
         df.to_html(self.OUTPATH + "supercells_report.html")
         try:
             self.export_to_excel(df)
         except:
                 print(f"Failed to generate XLSX")
+        try:
+            self.export_to_html(df)
+        except:
+            print(f"Failed to generate HTML")
         # save log
         log_dict = {
             "input": self.PATH,
@@ -80,3 +110,7 @@ class CellRanger:
         with open(self.OUTDIR + "log.json", "w") as json_file:
             json.dump(log_dict, json_file)
         print("Done.\nOutput in "+str(self.OUTPATH))
+            
+    df = pd.read_csv('metrics_summary.csv')
+    print("Pandas Version:"+pd. __version__)
+    export_to_html(df)
