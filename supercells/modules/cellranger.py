@@ -48,7 +48,7 @@ class CellRanger:
         )
         df.to_excel(self.OUTDIR + "supercells_data.xlsx", sheet_name="Super")
         
-    def export_to_html(df):
+    def export_to_html(self, df):
         """export data to HTML"""
         print("Exporting to HTML")
         
@@ -65,11 +65,7 @@ class CellRanger:
         )\
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
         )
-        df_html = style.render()
-        text_file = open("df.html", "w")
-        text_file.write(df_html)
-        text_file.close()
-        webbrowser.open_new_tab('df.html')
+        style.to_html(self.OUTDIR + "supercells_report.html")
 
     def parse_studies(self):
         """Parse located studies"""
