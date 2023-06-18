@@ -110,7 +110,3 @@ class CellRanger:
         with open(self.OUTDIR + "log.json", "w") as json_file:
             json.dump(log_dict, json_file)
         print("Done.\nOutput in "+str(self.OUTPATH))
-            
-    df = pd.read_csv('metrics_summary.csv')
-    print("Pandas Version:"+pd. __version__)
-    export_to_html(df)
