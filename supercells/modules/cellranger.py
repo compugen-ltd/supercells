@@ -63,7 +63,6 @@ class CellRanger:
         )\
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
         ).to_html(os.path.join(self.OUTDIR , "supercells_report.html"))
-        display(final_df)
 
     def parse_studies(self):
         """Parse located studies"""
