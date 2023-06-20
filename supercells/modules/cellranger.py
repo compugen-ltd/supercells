@@ -6,7 +6,6 @@ import glob as glob
 import os
 from datetime import datetime
 import json
-from IPython.display import display
 
 
 class CellRanger:
@@ -17,7 +16,7 @@ class CellRanger:
         # initialize the object
         self.PATH = args.input
         self.OUTPATH = args.output
-        self.OUTDIR = self.OUTPATH
+        self.OUTDIR = self.OUTPATH + "supercells_data/"
         # parse the input folder
         print("Parsing folder: " + self.PATH)
         self.STUDIES = glob.glob(self.PATH + "*/outs/")
