@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 import json
 from IPython.display import display
-import webbrowser
 
 
 class CellRanger:
