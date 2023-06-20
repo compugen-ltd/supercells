@@ -29,7 +29,7 @@ class CellRanger:
             print("No valid studies found")
 
     def export_to_excel(self, df):
-        """export data to XLSX and whilight issues"""
+        """export data to XLSX and highlight issues"""
         print("Exporting to Excel")
 
         idx = pd.IndexSlice
@@ -47,7 +47,7 @@ class CellRanger:
         ).to_excel(os.path.join(self.OUTDIR , "supercells_data.xlsx"), sheet_name="Super")
         
     def export_to_html(self, df):
-        """export data to HTML"""
+        """export data to HTML and highlight issues"""
         print("Exporting to HTML")
         
         idx = pd.IndexSlice
@@ -79,7 +79,7 @@ class CellRanger:
         print(names)
         df = pd.concat(lst)
         df["name"] = names
-        df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
+        df = df.set_index("name").T  
         
         if not os.path.exists(self.OUTDIR):
             os.makedirs(self.OUTDIR)
