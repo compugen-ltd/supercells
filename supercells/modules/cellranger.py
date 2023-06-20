@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 supercells - module to parse cellranger output data
 """
@@ -11,6 +10,7 @@ import json
 
 class CellRanger:
     """CellRanger class"""
+    
 
     def __init__(self, args):
         # initialize the object
@@ -28,7 +28,7 @@ class CellRanger:
             print("No valid studies found")
 
     def export_to_excel(self, df):
-        """export data to XLSX and whilight issues"""
+        """export data to XLSX and highlight issues"""
         print("Exporting to Excel")
 
         idx = pd.IndexSlice
@@ -39,12 +39,29 @@ class CellRanger:
         def style_pass(v, props=""):
             return props if v > 1500 else None
 
-        df = df.style.applymap(
+        final_df = df.style.applymap(
             style_low, props="color:red;background-color:pink;", subset=slice_
         )\
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
-        )
-        df.to_excel(self.OUTDIR + "supercells_data.xlsx", sheet_name="Super")
+        ).to_excel(os.path.join(self.OUTDIR , "supercells_data.xlsx"), sheet_name="Super")
+        
+    def export_to_html(self, df):
+        """export data to HTML and highlight issues"""
+        print("Exporting to HTML")
+        
+        idx = pd.IndexSlice
+        slice_ = idx["Median Genes per Cell", :]
+        
+        def style_low(v, props=""):
+            return props if v < 1500 else None
+        def style_pass(v, props=""):
+            return props if v > 1500 else None
+
+        final_df = df.style.applymap(
+            style_low, props="color:red;background-color:pink;", subset=slice_
+        )\
+        .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
+        ).to_html(os.path.join(self.OUTDIR , "supercells_report.html"))
 
     def parse_studies(self):
         """Parse located studies"""
@@ -54,22 +71,27 @@ class CellRanger:
         for f in self.STUDIES:
             try:
                 lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
-                names.append(f.split("/")[-3])
+                names.append(f.split(os.sep)[-3])
             except:
                 print(f"Failed to find summary for {f}")
         print(names)
         df = pd.concat(lst)
         df["name"] = names
-        df = df.set_index("name").T  # .drop(columns=['Hash_2','Hash_1'])
+        df = df.set_index("name").T  
         
         if not os.path.exists(self.OUTDIR):
             os.makedirs(self.OUTDIR)
         df.to_csv(self.OUTDIR + "supercells_data.csv")
+        df.to_json(self.OUTDIR + "supercells_json_report.json")
         df.to_html(self.OUTPATH + "supercells_report.html")
         try:
             self.export_to_excel(df)
         except:
                 print(f"Failed to generate XLSX")
+        try:
+            self.export_to_html(df)
+        except:
+            print(f"Failed to generate HTML")
         # save log
         log_dict = {
             "input": self.PATH,
