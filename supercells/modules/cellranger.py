@@ -6,7 +6,7 @@ import glob as glob
 import os
 from datetime import datetime
 import json
-from IPython.display import HTML
+from IPython.display import display
 import webbrowser
 
 
@@ -18,7 +18,7 @@ class CellRanger:
         # initialize the object
         self.PATH = args.input
         self.OUTPATH = args.output
-        self.OUTDIR = self.OUTPATH + "supercells_data/"
+        self.OUTDIR = self.OUTPATH
         # parse the input folder
         print("Parsing folder: " + self.PATH)
         self.STUDIES = glob.glob(self.PATH + "*/outs/")
@@ -41,31 +41,30 @@ class CellRanger:
         def style_pass(v, props=""):
             return props if v > 1500 else None
 
-        df = df.style.applymap(
+        final_df = df.style.applymap(
             style_low, props="color:red;background-color:pink;", subset=slice_
         )\
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
-        )
-        df.to_excel(self.OUTDIR + "supercells_data.xlsx", sheet_name="Super")
+        ).to_excel(os.path.join(self.OUTDIR , "supercells_data.xlsx"), sheet_name="Super")
         
     def export_to_html(self, df):
         """export data to HTML"""
         print("Exporting to HTML")
         
         idx = pd.IndexSlice
-        slice_ = idx["Median Genes per Cell"]
+        slice_ = idx["Median Genes per Cell", :]
         
         def style_low(v, props=""):
             return props if v < 1500 else None
         def style_pass(v, props=""):
             return props if v > 1500 else None
 
-        style = df.style.applymap(
+        final_df = df.style.applymap(
             style_low, props="color:red;background-color:pink;", subset=slice_
         )\
         .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_
-        )
-        style.to_html(self.OUTDIR + "supercells_report.html")
+        ).to_html(os.path.join(self.OUTDIR , "supercells_report.html"))
+        display(final_df)
 
     def parse_studies(self):
         """Parse located studies"""
@@ -75,7 +74,7 @@ class CellRanger:
         for f in self.STUDIES:
             try:
                 lst.append(pd.read_csv(f + "metrics_summary.csv", thousands=","))
-                names.append(f.split("/")[-3])
+                names.append(f.split(os.sep)[-3])
             except:
                 print(f"Failed to find summary for {f}")
         print(names)
