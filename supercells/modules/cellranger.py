@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 import json
 from pathlib import Path
+# import multiqc
 
 class CellRanger:
     """CellRanger class"""
@@ -114,3 +115,5 @@ class CellRanger:
         with open(self.OUTDIR + "log.json", "w") as json_file:
             json.dump(log_dict, json_file)
         print("Done.\nOutput in "+str(self.OUTPATH))
+
+    # multiqc.run("C:\\Users\\toma\\Documents\\supercells\\supercells")
