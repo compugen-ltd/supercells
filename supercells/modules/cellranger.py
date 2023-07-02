@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 import json
 from pathlib import Path
+# to run a MutiQC report import below
 # import multiqc
 
 class CellRanger:
@@ -33,6 +34,7 @@ class CellRanger:
         """export data to Excel/HTML""" 
         print("Exporting to "+ extype)
 
+        # index slicing for three rows that interest us
         idx = pd.IndexSlice
         slice_ = idx["Median Genes per Cell", :]
         
@@ -59,6 +61,8 @@ class CellRanger:
             v = float(v.strip(' \t\n\r%'))
             return props if v > 70 else None
         
+
+        # apply the style to make report clear
         final_df = df.style.applymap(
             style_low, props="color:red;background-color:pink;", subset=slice_
         )\
@@ -116,4 +120,5 @@ class CellRanger:
             json.dump(log_dict, json_file)
         print("Done.\nOutput in "+str(self.OUTPATH))
 
-    # multiqc.run("C:\\Users\\toma\\Documents\\supercells\\supercells")
+    # in order to run a MultiQC report add the line below with the corresponding path
+    # multiqc.run("C:\\DirectoryPath")
