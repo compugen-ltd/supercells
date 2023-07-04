@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 import json
 from pathlib import Path
-# to run a MutiQC report import below
+# to run a MultiQC report import below
 # import multiqc
 
 class CellRanger:
