@@ -66,14 +66,12 @@ class CellRanger:
         final_df = df.style.applymap(
             style_low, props="color:red;background-color:pink;", subset=slice_
         )\
-        .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_)
-
-        final_df = final_df.applymap(
+        .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_)\
+        .applymap(
             style_low2, props="color:red;background-color:pink;", subset=slice_2
         )\
-        .applymap(style_pass2, props="color:green;background-color:#D7FFE4;", subset=slice_2)
-
-        final_df = final_df.applymap(
+        .applymap(style_pass2, props="color:green;background-color:#D7FFE4;", subset=slice_2)\
+        .applymap(
             style_low3, props="color:red;background-color:pink;", subset=slice_3
         )\
         .applymap(style_pass3, props="color:green;background-color:#D7FFE4;", subset=slice_3)
