@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 import json
 from pathlib import Path
-# to run a MultiQC report import below
+# to generate a MultiQC report import below
 # import multiqc
 
 class CellRanger:
@@ -20,9 +20,7 @@ class CellRanger:
         self.OUTDIR = self.OUTPATH
         # parse the input folder
         print("Parsing folder: " + self.PATH)
-        self.STUDIES = []
-        for p in Path(self.PATH).rglob("*.csv"):
-            self.STUDIES.append(p)
+        self.STUDIES =  list(Path(self.PATH).rglob("*outs/*.csv"))
         self.NUM_STUDIES = len(self.STUDIES)
         if self.NUM_STUDIES:
             print("Found " + str(self.NUM_STUDIES) + " studies")
@@ -84,17 +82,16 @@ class CellRanger:
     def parse_studies(self):
         """Parse located studies"""
         print("Parsing studies")
-        lst = []
-        names = []
+        lst:list[pd.DataFrame] = []
+        names:list[str] = []
         for f in self.STUDIES:
             try:
-                lst.append(pd.read_csv(f, thousands = ","))
-                names.append(f.parent.parent.name)
+                single_df = pd.read_csv(f, thousands=",")
+                single_df["name"] = f.parent.parent.name
+                lst.append(single_df)
             except:
                 print(f"Failed to find summary for {f}")
-        print(names)
         df = pd.concat(lst)
-        df["name"] = names
         df = df.set_index('name').T  # .drop(columns=['Hash_2','Hash_1'])
         
         if not os.path.exists(self.OUTDIR):
@@ -118,5 +115,5 @@ class CellRanger:
             json.dump(log_dict, json_file)
         print("Done.\nOutput in "+str(self.OUTPATH))
 
-    # in order to run a MultiQC report add the line below with the corresponding path
+    # in order to generate a MultiQC report add the line below with the corresponding path
     # multiqc.run("C:\\DirectoryPath")
