@@ -3,7 +3,6 @@
 supercells - only the finest of cells
 """
 from .version import __version__
-import sys
 import argparse
 from .modules.cellranger import CellRanger
 
@@ -34,9 +33,7 @@ def main():
     """main function that runs supercells"""
     p = get_argument_parser()
     args = p.parse_args()
-    CellRanger(args)
-    success = True
-    sys.exit(0 if success else 1)
+    CellRanger(args).run()
 
 
 if __name__ == "__main__":
