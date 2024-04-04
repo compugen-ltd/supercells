@@ -11,13 +11,13 @@ from typing import Optional
 
 import pandas as pd
 
-from config import OUTPUT_FOLDER, CUTOFFS_DICT
+from supercells.config import OUTPUT_FOLDER, CUTOFFS_DICT
 
 
-def style_df(df: pd.DataFrame, cutoffs_dict: dict):
+def style_df(df: pd.DataFrame, cutoff_dict: dict):
     styled_df = df
 
-    for key_name, cutoff_value in cutoffs_dict.items():
+    for key_name, cutoff_value in cutoff_dict.items():
         slice_ = pd.IndexSlice[key_name, :]
 
         def style_low(v, props=""):
@@ -37,12 +37,12 @@ def style_df(df: pd.DataFrame, cutoffs_dict: dict):
 class CellRanger:
     """CellRanger class"""
 
-    def __init__(self: CellRanger, inpath: str, output: Optional[str] = None, cutoffs_dict: Optional[dict] = None):
+    def __init__(self: CellRanger, inpath: str, output: Optional[str] = None, cutoff_dict: Optional[dict] = None):
         # initialize the object
         self.inpath = Path(inpath)
         self.outpath = Path(output) if output else Path()
         self.outdir = Path(self.outpath).joinpath(OUTPUT_FOLDER)
-        self.cutoffs_dict = cutoffs_dict if cutoffs_dict else CUTOFFS_DICT
+        self.cutoff_dict = cutoff_dict if cutoff_dict else CUTOFFS_DICT
         # parse the input folder
         logging.info(f"Parsing folder: {self.inpath}")
         self.studies_directories = list(self.inpath.rglob("*/outs"))
@@ -71,7 +71,7 @@ class CellRanger:
 
         self.outdir.mkdir(exist_ok=True)
 
-        styled_df = style_df(df, self.cutoffs_dict)
+        styled_df = style_df(df, self.cutoff_dict)
         styled_df.to_csv(self.outdir.joinpath("supercells_data.csv"))
         styled_df.to_json(self.outdir.joinpath("supercells_json_report.json"))
         styled_df.to_html(self.outpath.joinpath("supercells_report.html"))

@@ -3,10 +3,10 @@
 supercells - only the finest of cells
 """
 from pathlib import Path
-
-from .version import __version__
 import argparse
-from .modules.cellranger import CellRanger
+
+from supercells.version import __version__
+from supercells.modules.cellranger import CellRanger
 
 
 def get_argument_parser():
@@ -16,23 +16,23 @@ def get_argument_parser():
     parser.add_argument(
         "--input",
         "-i",
-        metavar="inpath",
+        dest="inpath",
         required=True,
-        help=("Enter the location of the input files"),
+        help="Enter the location of the input files",
     )
     parser.add_argument(
         "--output",
         "-o",
-        metavar="output",
+        dest="output",
         required=False,
         default=Path("."),
-        help=("Specify the location of the output files, defualt is current wd"),
+        help="Specify the location of the output files, default is current wd",
     )
     parser.add_argument(
         "--cutoff-dict",
         "-c",
         default=None,
-        metavar="cutoff_dict",
+        dest="cutoff_dict",
         required=False
     )
     return parser
