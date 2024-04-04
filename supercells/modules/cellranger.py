@@ -55,19 +55,18 @@ class CellRanger:
             return
 
         """Parse located studies"""
-        print("Parsing studies")
-        lst = []
-        names = []
+        logging.info("Parsing studies")
+        dfs = []
         for f in self.studies_directories:
+            logging.info(f)
             try:
-                lst.append(pd.read_csv(f.joinpath("metrics_summary.csv"), thousands=","))
-                names.append(f.stem)
+                df = pd.read_csv(f.joinpath("metrics_summary.csv"), thousands=",")
+                df["name"] = f.stem
+                dfs.append(df)
             except FileNotFoundError:
                 logging.error(f"Failed to find summary for {f}")
-        logging.info(names)
-        df = pd.concat(lst)
-        df["name"] = names
-        df = df.set_index("name").T
+
+        df = pd.concat(dfs).set_index("name").T
 
         self.outdir.mkdir(exist_ok=True)
 

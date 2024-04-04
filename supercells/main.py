@@ -4,9 +4,7 @@ supercells - only the finest of cells
 """
 from pathlib import Path
 import argparse
-import json
 
-from supercells.config import CUTOFFS_DICT
 from supercells.modules.general import read_and_check_cutoff_dict
 from supercells.version import __version__
 from supercells.modules.cellranger import CellRanger
@@ -26,7 +24,7 @@ def get_argument_parser():
     parser.add_argument(
         "--output",
         "-o",
-        dest="output",
+        dest="outpath",
         required=False,
         default=Path("."),
         help="Specify the location of the output files, default is current wd",
