@@ -10,28 +10,34 @@ import logging
 from typing import Optional
 
 import pandas as pd
+from pandas.io.formats.style import Styler
 
 from supercells.config import OUTPUT_FOLDER, CUTOFFS_DICT
 
 
-def style_df(df: pd.DataFrame, cutoff_dict: dict):
-    styled_df = df
+def style_df(df: pd.DataFrame, cutoff_dict: dict) -> Styler:
+    styler = Styler(df)
+    warning_style = "color:red;background-color:pink;"
+    ok_style = "color:green;background-color:#D7FFE4;"
 
-    for key_name, cutoff_value in cutoff_dict.items():
-        slice_ = pd.IndexSlice[key_name, :]
+    for k, cutoff_val in cutoff_dict.items():
+        logging.info(f"Styling- '{k}'")
+        slice_ = pd.IndexSlice[k, :]
 
         def style_low(v, props=""):
-            return props if v < cutoff_value else None
+            if isinstance(v, str):
+                v = float(v.strip("%"))
+            return props if v < cutoff_val else None
 
         def style_pass(v, props=""):
-            return props if v >= cutoff_value else None
+            if isinstance(v, str):
+                v = float(v.strip("%"))
+            return props if v > cutoff_val else None
 
-        styled_df = (
-            styled_df.style.applymap(style_low, props="color:red;background-color:pink;", subset=slice_)
-            .applymap(style_pass, props="color:green;background-color:#D7FFE4;", subset=slice_)
-        )
+        styler = (styler.map(style_low, props=warning_style, subset=slice_)
+                  .map(style_pass, props=ok_style, subset=slice_))
 
-    return styled_df
+    return styler
 
 
 class CellRanger:
@@ -61,7 +67,7 @@ class CellRanger:
             logging.info(f)
             try:
                 df = pd.read_csv(f.joinpath("metrics_summary.csv"), thousands=",")
-                df["name"] = f.stem
+                df["name"] = f.parent.name
                 dfs.append(df)
             except FileNotFoundError:
                 logging.error(f"Failed to find summary for {f}")
@@ -71,20 +77,20 @@ class CellRanger:
         self.outdir.mkdir(exist_ok=True)
 
         styled_df = style_df(df, self.cutoff_dict)
-        styled_df.to_csv(self.outdir.joinpath("supercells_data.csv"))
-        styled_df.to_json(self.outdir.joinpath("supercells_json_report.json"))
+        df.to_csv(self.outdir.joinpath("supercells_data.csv"))
+        # df.to_json(self.outdir.joinpath("supercells_json_report.json"))
         styled_df.to_html(self.outpath.joinpath("supercells_report.html"))
-        styled_df.to_excel(self.outpath.joinpath("supercells_report.excel"), sheet_name="Super")
+        styled_df.to_excel(self.outpath.joinpath("supercells_report.xlsx"), sheet_name="Super")
         styled_df.to_html(self.outpath.joinpath("supercells_report.excel"))
 
         # save log
         log_dict = {
-            "input": self.inpath,
-            "output": self.outpath,
+            "input": str(self.inpath),
+            "output": str(self.outpath),
             "module": "cellranger",
             "datetime": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         }
-        with self.outdir.joinpath("log.json").open("w") as json_file:
+        with self.outdir.joinpath("log.json").open("w+") as json_file:
             json.dump(log_dict, json_file)
 
         logging.info(f"Done.\nOutput in {self.outpath}")

@@ -1,13 +1,13 @@
 OUTPUT_FOLDER = "supercells_data"
 
 CUTOFFS_DICT: dict[str, float] = {
-    "Mean reads per cell": 20_000,
-    "Median genes per cell": 1_500,
-    "Valid barcodes": 75,
-    "Valid UMIs": 75,
-    "Sequencing saturation": 20000,
-    "Q30 bases in RNA read": 65,
-    "Fraction reads in cells": 70,
-    "Reads mapped to genome": 75,
-    "Reads mapped confidently to transcriptome": 30
+    "Mean Reads per Cell": 20_000,
+    "Median Genes per Cell": 1_500,
+    "Valid Barcodes": 75,
+    # "Valid UMIs": 75, # TODO: replace with valid metric found in CellRanger output summary
+    "Sequencing Saturation": 20000,
+    "Q30 Bases in RNA Read": 65,
+    "Fraction Reads in Cells": 70,
+    "Reads Mapped to Genome": 75,
+    "Reads Mapped Confidently to Transcriptome": 30
 }
