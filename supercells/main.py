@@ -39,7 +39,7 @@ def get_argument_parser():
     return parser
 
 
-def main(CUTOFF_DICT=None):
+def main():
     """main function that runs supercells"""
     p = get_argument_parser()
     args = p.parse_args()

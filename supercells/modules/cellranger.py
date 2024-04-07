@@ -70,7 +70,7 @@ class CellRanger:
                 df["name"] = f.parent.name
                 dfs.append(df)
             except FileNotFoundError:
-                logging.error(f"Failed to find summary for {f}")
+                logging.error(f"Failed to find metrics_summary file in '{f}'")
 
         df = pd.concat(dfs).set_index("name").T
 
