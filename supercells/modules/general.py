@@ -59,4 +59,17 @@ def get_scatterplot_fig(df: pd.DataFrame) -> plotly.graph_objs.Figure:
 
     fig.update_layout(template="plotly_white")
 
+    fig.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[x / 10 for x in range(11)],
+            ticktext=[x / 10 for x in range(11)],
+        ),
+        yaxis=dict(
+            tickmode='array',
+            tickvals=[x / 10 for x in range(11)],
+            ticktext=[""] + [(x + 1) / 10 for x in range(10)],
+        ),
+        font=dict(size=18, color="black"))
+
     return fig
