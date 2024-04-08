@@ -13,6 +13,7 @@ import pandas as pd
 from pandas.io.formats.style import Styler
 
 from supercells.config import OUTPUT_FOLDER, CUTOFFS_DICT
+from supercells.modules.general import get_scatterplot_fig
 
 
 def style_df(df: pd.DataFrame, cutoff_dict: dict) -> Styler:
@@ -82,6 +83,9 @@ class CellRanger:
         styled_df.to_html(self.outpath.joinpath("supercells_report.html"))
         styled_df.to_excel(self.outpath.joinpath("supercells_report.xlsx"), sheet_name="Super")
         styled_df.to_html(self.outpath.joinpath("supercells_report.excel"))
+
+        fig = get_scatterplot_fig(df)
+        fig.write_html(self.outpath.joinpath('my_plot.html'))
 
         # save log
         log_dict = {
