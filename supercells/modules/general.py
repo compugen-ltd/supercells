@@ -36,8 +36,9 @@ def get_scatterplot_fig(df: pd.DataFrame) -> plotly.graph_objs.Figure:
 
     metrics = ["Reads Mapped Confidently to Transcriptome", "Sequencing Saturation"]
     df = df.loc[metrics].T.map(lambda x: float(x.strip("%")) / 100).reset_index()
+    df = df.rename({"name": "sample"}, axis=1)
 
-    fig = df.plot.scatter(x="Sequencing Saturation", y="Reads Mapped Confidently to Transcriptome", color="name")
+    fig = df.plot.scatter(x="Sequencing Saturation", y="Reads Mapped Confidently to Transcriptome", color="sample")
     fig.add_hline(y=0.6, line_width=3, line_color="red")
     fig.add_vline(x=0.1, line_width=3, line_color="red")
     fig.update_xaxes(range=[0, 1])
@@ -70,6 +71,10 @@ def get_scatterplot_fig(df: pd.DataFrame) -> plotly.graph_objs.Figure:
             tickvals=[x / 10 for x in range(11)],
             ticktext=[""] + [(x + 1) / 10 for x in range(10)],
         ),
-        font=dict(size=18, color="black"))
+        font=dict(size=18, color="black"),
+        autosize=False,
+        width=1900,
+        height=800
+    )
 
     return fig

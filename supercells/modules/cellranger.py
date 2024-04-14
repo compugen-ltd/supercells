@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 import logging
 from typing import Optional
+import sys
 
 import pandas as pd
 from pandas.io.formats.style import Styler
@@ -79,20 +80,16 @@ class CellRanger:
 
         styled_df = style_df(df, self.cutoff_dict)
         df.to_csv(self.outdir.joinpath("supercells_data.csv"))
-        # df.to_json(self.outdir.joinpath("supercells_json_report.json"))
         styled_df.to_html(self.outpath.joinpath("supercells_report.html"))
         styled_df.to_excel(self.outpath.joinpath("supercells_report.xlsx"), sheet_name="Super")
-        styled_df.to_html(self.outpath.joinpath("supercells_report.excel"))
 
         fig = get_scatterplot_fig(df)
-        fig.write_html(self.outpath.joinpath('my_plot.html'))
+        fig.write_html(self.outpath.joinpath('supercells_plots.html'))
 
         # save log
         log_dict = {
-            "input": str(self.inpath),
-            "output": str(self.outpath),
-            "module": "cellranger",
             "datetime": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "command": sys.argv
         }
         with self.outdir.joinpath("log.json").open("w+") as json_file:
             json.dump(log_dict, json_file)
