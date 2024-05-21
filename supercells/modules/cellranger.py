@@ -3,11 +3,13 @@ supercells - module to parse cellranger output data
 """
 from __future__ import annotations
 
+import operator
 import json
 from datetime import datetime
+from numbers import Number
 from pathlib import Path
 import logging
-from typing import Optional
+from typing import Optional, Union
 import sys
 
 import pandas as pd
@@ -15,6 +17,14 @@ from pandas.io.formats.style import Styler
 
 from supercells.config import OUTPUT_FOLDER, CUTOFFS_DICT
 from supercells.modules.general import get_scatterplot_fig
+
+
+def style_low(v, props: str = "", cutoff_val: Number = 0,
+              my_operator: Optional[Union[operator.ge, operator.lt]] = None):
+    if isinstance(v, str):
+        v = float(v.strip("%"))
+
+    return props if my_operator(v, cutoff_val) else None
 
 
 def style_df(df: pd.DataFrame, cutoff_dict: dict) -> Styler:
@@ -26,18 +36,10 @@ def style_df(df: pd.DataFrame, cutoff_dict: dict) -> Styler:
         logging.info(f"Styling- '{k}'")
         slice_ = pd.IndexSlice[k, :]
 
-        def style_low(v, props=""):
-            if isinstance(v, str):
-                v = float(v.strip("%"))
-            return props if v < cutoff_val else None
-
-        def style_pass(v, props=""):
-            if isinstance(v, str):
-                v = float(v.strip("%"))
-            return props if v > cutoff_val else None
-
-        styler = (styler.map(style_low, props=warning_style, subset=slice_)
-                  .map(style_pass, props=ok_style, subset=slice_))
+        styler = (
+            styler.map(style_low, subset=slice_, props=warning_style, cutoff_val=cutoff_val, my_operator=operator.lt)
+            .map(style_low, subset=slice_, props=ok_style, cutoff_val=cutoff_val, my_operator=operator.ge)
+        )
 
     return styler
 
