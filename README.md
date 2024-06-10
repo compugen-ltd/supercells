@@ -64,7 +64,7 @@ This is a sample of the json:
     "Mean Reads per Cell": 20000,
     "Median Genes per Cell": 1500,
     "Valid Barcodes": 75,
-    "Sequencing Saturation": 20000,
+    "Sequencing Saturation": 30,
     "Q30 Bases in RNA Read": 65,
     "Fraction Reads in Cells": 70,
     "Reads Mapped to Genome": 75,
