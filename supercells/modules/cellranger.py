@@ -23,6 +23,8 @@ def style_low(v, props: str = "", cutoff_val: Number = 0,
               my_operator: Optional[Union[operator.ge, operator.lt]] = None):
     if isinstance(v, str):
         v = float(v.strip("%"))
+    if isinstance(cutoff_val, str):
+        cutoff_val = float(cutoff_val.strip("%"))
 
     return props if my_operator(v, cutoff_val) else None
 

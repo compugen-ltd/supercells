@@ -63,12 +63,12 @@ This is a sample of the json:
 {
     "Mean Reads per Cell": 20000,
     "Median Genes per Cell": 1500,
-    "Valid Barcodes": 75,
-    "Sequencing Saturation": 30,
+    "Valid Barcodes": "75%",
+    "Sequencing Saturation": "30%",
     "Q30 Bases in RNA Read": 65,
-    "Fraction Reads in Cells": 70,
-    "Reads Mapped to Genome": 75,
-    "Reads Mapped Confidently to Transcriptome": 30
+    "Fraction Reads in Cells": "70%",
+    "Reads Mapped to Genome": "75%",
+    "Reads Mapped Confidently to Transcriptome": "30%"
 }
 ```
 The keys are the field names and the values are cutoff values for that field. i.e. **Mean Reads per Cell** cutoff  
