@@ -1,5 +1,8 @@
 # compiled python files
 dist/
-supercells.egg-info/
-__pycache__/
+**/*.egg-info/
+**/__pycache__/
 *.py[cod]
+build
+/data/examples/
+.idea
