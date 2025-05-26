@@ -12,6 +12,7 @@ import logging
 from typing import Optional, Union
 import sys
 
+from plotly.utils import PlotlyJSONEncoder
 import pandas as pd
 from pandas.io.formats.style import Styler
 
@@ -59,7 +60,7 @@ class CellRanger:
         logging.info(f"Parsing folder: {self.inpath}")
         self.studies_directories = list(self.inpath.rglob("*/outs"))
 
-    def parse_studies(self):
+    def parse_studies(self, output_plotly_json: bool = False):
         if self.studies_directories:
             logging.info(f"Found {len(self.studies_directories)} studies")
         else:
@@ -88,7 +89,14 @@ class CellRanger:
         styled_df.to_excel(self.outpath.joinpath("supercells_report.xlsx"), sheet_name="Super")
 
         fig = get_scatterplot_fig(df)
-        fig.write_html(self.outpath.joinpath('supercells_plots.html'))
+
+        if output_plotly_json:
+            d = fig.to_plotly_json()
+            with self.outpath.joinpath('supercells_plots.json').open("w+") as f:
+                json.dump(d, f, indent=2,  cls=PlotlyJSONEncoder)
+        else:
+            fig.write_html(self.outpath.joinpath('supercells_plots.html'))
+
 
         # save log
         log_dict = {
@@ -100,5 +108,5 @@ class CellRanger:
 
         logging.info(f"Done.\nOutput in {self.outpath}")
 
-    def run(self):
-        self.parse_studies()
+    def run(self, output_plotly_json: bool = False):
+        self.parse_studies(output_plotly_json)
