@@ -40,7 +40,7 @@ Unless specified otherwise it will generate `supercells_report.html` within the 
 
 ![image](https://user-images.githubusercontent.com/9028967/222570081-d8db435a-5683-4c0b-bc86-42c95b54c186.png)
 
-### More options
+### 🎛️ Additional options:
 
 ```
 usage: supercells [-h] [--version] --input INPATH [--output OUTPATH] [--cutoff-dict CUTOFF_DICT_PATH]
@@ -77,5 +77,5 @@ that cell in <span style="color:red">red</span>, else in <span style="color:gree
 
 
 
-## Further development
-Suggestions for additional features and code contributions are welcomed
+## 🏗️ Further development
+Suggestions for additional features and code contributions are welcomed 🙏
